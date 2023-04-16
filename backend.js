@@ -35,8 +35,6 @@ const users = {
    ]
 }
  
- 
-
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -55,6 +53,10 @@ app.get('/users', (req, res) => {
    }
 });
 
+const findUserByName = (name) => { 
+   return users['users_list'].filter( (user) => user['name'] === name); 
+}
+
 app.get('/users/:id', (req, res) => {
    const id = req.params['id']; //or req.params.id
    let result = findUserById(id);
@@ -66,6 +68,11 @@ app.get('/users/:id', (req, res) => {
    }
 });
 
+function findUserById(id) {
+   return users['users_list'].find( (user) => user['id'] === id); // or line below
+   //return users['users_list'].filter( (user) => user['id'] === id);
+}
+
 app.post('/users', (req, res) => {
    const userToAdd = req.body;
    addUser(userToAdd);
@@ -74,16 +81,6 @@ app.post('/users', (req, res) => {
 
 function addUser(user){
    users['users_list'].push(user);
-}
-
-
-function findUserById(id) {
-   return users['users_list'].find( (user) => user['id'] === id); // or line below
-   //return users['users_list'].filter( (user) => user['id'] === id);
-}
-
-const findUserByName = (name) => { 
-   return users['users_list'].filter( (user) => user['name'] === name); 
 }
 
 app.listen(port, () => {
